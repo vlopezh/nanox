@@ -1,9 +1,14 @@
 dist: trusty
-sudo: false
+sudo: required
 language: cpp
 
 script:
-  - ./bootstrap
-  - ./configure --disable-instrumentation --disable-debug
-  - make
-  - make check BETS_OPTIONS="-only-fails"
+   - g++ -c src/arch/unix-os/os.cpp -I src/core/ -I src/support/ -DNEW=new
+   - g++ -c src/arch/unix-os/cpuset.cpp -I src/core/ -I src/support/
+   - g++ -c tests/test/00_arch/unix-os/cpuset_00.cpp -I src/arch/unix-os/ -I src/support/
+   - g++ cpuset.o cpuset_00.o os.o -ldl
+   - ./a.out
+  # - ./bootstrap
+  # - ./configure --disable-instrumentation --disable-debug
+  # - make
+  # - make check BETS_OPTIONS="-only-fails"
